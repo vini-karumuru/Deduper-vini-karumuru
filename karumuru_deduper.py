@@ -7,12 +7,15 @@ import re
 
 # set global variables to hold inputs
 def get_args():
+
     parser = argparse.ArgumentParser(description="A script that deduplicates a SAM file by removing PCR duplicates.")
     parser.add_argument("-f", help = "designates absolute file path to sorted SAM file", required = True, type = str)
     parser.add_argument("-o", help = "designates absolute file path to output deduplicated SAM file", required = True, type = str)
     parser.add_argument("-u", help = "designates file containing list of UMIs", required = True, type = str)
     parser.add_argument("-s", help = "[OPTIONAL] designates absolute file path to output deduplication statistics file", required = False, type = str)
+    
     return parser.parse_args()
+
 args = get_args()
 
 
@@ -175,8 +178,8 @@ if args.s:
         Sort a list numerically, then alphabetically. 
         All numeric values are listed first, sorted numerically. Then all alphabet/alphanumeric values are listed, sorted alphabetically.
 
-        INPUT (list): a list of strings (can be a mix of numeric, alphabet, and alphanumeric strings)
-        OUTPUT (list): a sorted list of strings
+        INPUT (list): A list of strings (can be a mix of numeric, alphabet, and alphanumeric strings)
+        OUTPUT (list): A sorted list of strings
         """ 
         convert_type = lambda text: int(text) if text.isdigit() else text 
         alphanum_key = lambda key: [convert_type(c) for c in re.split('([0-9]+)', key)] 
