@@ -1,66 +1,34 @@
 # Deduper
+**A Reference Based PCR Duplicate Removal tool.**
 
-## Part 1
-Use this repo template to create your own Deduper repo - you should do all your work in your own repository. Please name it `Deduper-<github-user-name>`.
+Due to amplification bias, PCR does not always amplify RNA proportionally. This can lead to inaccurate quantification of expression levels of genes/isoforms. Luckily, in many sequencing datasets, UMIs (unique molecular indexes) are attached to cDNA during library preparation prior to amplification, which can help us identify PCR clones. Reads that map to the same genomic location and harbor the same UMI are PCR duplicates, and only one copy must be retained. This tool takes in a SAM file, extracts necessary information from each read (including UMI sequence, chromosome, strand, alignment start site, and soft masking information) to determine which reads are PCR duplicates. A single read out of each set of PCR duplicates (the first one encountered in the file) is retained. All retained reads are written to an output SAM file.
 
-Write up a strategy for writing a Reference Based PCR Duplicate Removal tool. That is, given a sorted sam file of uniquely mapped reads, remove all PCR duplicates (retain only a single copy of each read). Develop a strategy that avoids loading everything into memory. You should not write any code for this portion of the assignment. Be sure to:
-- Define the problem
-- Write examples:
-    - Include a properly formated sorted input sam file
-    - Include a properly formated expected output sam file
-- Develop your algorithm using pseudocode
-- Determine high level functions
-    - Description
-    - Function headers
-    - Test examples (for individual functions)
-    - Return statement
-    
-For this portion of the assignment, you should design your algorithm for single-end data, with 96 UMIs. UMI information will be in the QNAME, like so: ```NS500451:154:HWKTMBGXX:1:11101:15364:1139:GAACAGGT```. Discard any UMIs with errors (or think about how you might error correct, if you're feeling ambitious).
-
-## Part 2
-An important part of writing code is reviewing code - both your own and other's. In this portion of the assignment, you will be assigned 3 students' pseudocode algorithms to review. Be sure to evaluate the following points:
-- Does the proposed algorithm make sense to you? Can you follow the logic?
-- Does the algorithm do everything it's supposed to do? (see part 1)
-- Are proposed functions reasonable? Are they "standalone" pieces of code?
-
-You can find your assigned reviewees on Canvas. You can find your fellow students' repositories at 
+## Running the Tool
+Deduper is a Python script ([karumuru_deduper.py](./karumuru_deduper.py)) that can be run from the command line, as follows:
 ```
-github.com/<user>/Deduper-<github-user-name>
+./karumuru_deduper.py -f <in.sam> -u <known_umis.txt> -o <out.sam> [-s <dedup_stats.txt>]
 ```
-Be sure to leave comments on their repositories by creating issues or by commenting on the pull request.
+### Required Inputs
+#### `-f` | `--file`
+File path to a SAM file that:
+- Is sorted (by chromosome, then alignment start position)
+    - You may need to use `samtools sort` prior to running this tool 
+- Contains each read's UMI sequence at the end of its QNAME, like so:
+      ```NS500451:154:HWKTMBGXX:1:11101:15364:1139:GAACAGGT```
+- Can contain header lines (starting with `@`)
+- Example: [test.sam](./test.sam)
+#### `-u`  |  `--umi`
+File path to a text file that contains list of known UMIs, with each UMI sequence on a new line
+- Any reads containing UMIs that aren't in this list will be discarded
+- Example: [STL96.txt](./STL96.txt)
+#### `-o`  |  `--outfile`
+File path to output deduplicated SAM file
+- Will contain all header lines from input SAM file, along with deduplicated reads
 
-## Part 3
-Write your deduper function!
 
-Given a SAM file of uniquely mapped reads, and a text file containing the known UMIs, remove all PCR duplicates (retain only a single copy of each read). Remember:
-- Your Python code can assume a sorted sam file (you *might* need to use `samtools sort` outside of your Python script)
-- Account for: 
-    - all possible CIGAR strings (including adjusting for soft clipping, etc.)
-    - Strand
-    - Single-end reads
-    - Known UMIs
-- Considerations:
-    - Millions of reads – avoid loading everything into memory!
-    - Be sure to utilize functions appropriately
-    - Appropriately comment code and include doc strings
-- **CHALLENGE**: In a **separate branch**, implement options for
-    - Single-end vs paired-end
-    - Known UMIs vs randomers
-    - Error correction of known UMIs
-    - Choice of duplicate written to file
-    
-You MUST:
-- Write Python 3.12 compatible code
-- Include the following argparse options
-    - ```-f```, ```--file```: designates absolute file path to sorted sam file
-    - ```-o```, ```--outfile```: designates absolute file path to deduplicated sam file
-    - ```-u```, ```--umi```: designates file containing the list of UMIs
-    - ```-h```, ```--help```: prints a USEFUL help message (see argparse docs)
-        - That is, your code must be able to run (in a single step) if given a command in the format:
-          ```
-          ./<your_last_name>_deduper.py -u STL96.txt -f <in.sam> -o <out.sam>
-          ```
-- Output the first read encountered if duplicates are found
-- Output a properly formatted SAM file
-- Name your python script ```<your_last_name>_deduper.py``` and place it in the top level of your repo (that is, not inside a folder)
+### Optional Inputs
+##### `s`  |  `--stats`
+File path to a output text file containing deduplication statistics
+- See [dedup_stats_C1_SE_uniqAlign.txt](./dedup_stats_C1_SE_uniqAlign.txt) for an example of what this file looks like
+
 
