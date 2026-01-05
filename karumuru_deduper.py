@@ -9,10 +9,10 @@ import re
 def get_args():
 
     parser = argparse.ArgumentParser(description="A script that deduplicates a SAM file by removing PCR duplicates.")
-    parser.add_argument("-f", help = "designates absolute file path to sorted SAM file", required = True, type = str)
-    parser.add_argument("-o", help = "designates absolute file path to output deduplicated SAM file", required = True, type = str)
-    parser.add_argument("-u", help = "designates file containing list of UMIs", required = True, type = str)
-    parser.add_argument("-s", help = "[OPTIONAL] designates absolute file path to output deduplication statistics file", required = False, type = str)
+    parser.add_argument("-f", "--file", help = "designates absolute file path to sorted SAM file", required = True, type = str)
+    parser.add_argument("-o", "--outfile", help = "designates absolute file path to output deduplicated SAM file", required = True, type = str)
+    parser.add_argument("-u", "--umi", help = "designates file containing list of UMIs", required = True, type = str)
+    parser.add_argument("-s", "--stats", help = "[OPTIONAL] designates absolute file path to output deduplication statistics file", required = False, type = str)
     
     return parser.parse_args()
 
