@@ -1,0 +1,12 @@
+Deduplication Summary Statistics
+
+Total Input Reads: 16
+Header Lines: 25
+Unique Reads: 11
+Duplicate (Removed) Reads: 4
+Reads with Unknown UMIs: 1
+
+Unique Reads per Chromosome:
+2	9
+3	1
+16	1
