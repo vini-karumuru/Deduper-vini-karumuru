@@ -59,7 +59,7 @@ def determine_start_pos(SAM_line, strand):
     
     # plus strand calculation
     if strand == "+":
-        # look for soft clipping at begommomg of cigar string
+        # look for soft clipping at beginning of cigar string
         soft_clip = re.match(r'\d+S', cigar)
         if soft_clip:
             clip_amount = int(soft_clip.group()[:-1])
@@ -94,7 +94,7 @@ def determine_start_pos(SAM_line, strand):
 
 # create a set containing known UMIs
 umis = set()
-with open(args.u, 'r') as u_fh:
+with open(args.umi, 'r') as u_fh:
     for line in u_fh:
         umis.add(line.strip('\n'))
 
@@ -113,7 +113,7 @@ dup_reads = 0
 ### PARSING SAM FILE ----------------------------------------------------------------------------
 
 # open input SAM file for reading and output SAM file for writing
-with open(args.f, 'r') as i_fh, open(args.o, 'w') as o_fh:
+with open(args.file, 'r') as i_fh, open(args.outfile, 'w') as o_fh:
 
     # initialize a tracker for current chromosome number/name
     current_chrom = None
@@ -170,7 +170,7 @@ with open(args.f, 'r') as i_fh, open(args.o, 'w') as o_fh:
 
 # SUMMARIZING RESULTS ----------------------------------------------------------------------------
 
-if args.s:
+if args.stats:
 
     # define a function to sort chromosome names in a human readable order
     def sorted_nicely(ls): 
@@ -188,13 +188,13 @@ if args.s:
     sorted_chrom_names = sorted_nicely(list(chr_reads.keys()))
 
     # write summary statistics to output file
-    with open(args.s, 'w') as s_fh:
+    with open(args.stats, 'w') as s_fh:
         s_fh.write("Deduplication Summary Statistics\n\n")
         s_fh.write(f"Total Input Reads: {num_reads}\n")
         s_fh.write(f"Header Lines: {headers}\n")
         s_fh.write(f"Unique Reads: {unique_reads}\n")
         s_fh.write(f"Duplicate (Removed) Reads: {dup_reads}\n")
-        s_fh.write(f"Reads with Unnkown UMIs: {unknown_umis}\n")
+        s_fh.write(f"Reads with Unknown UMIs: {unknown_umis}\n")
         s_fh.write(f"\nUnique Reads per Chromosome:\n")
         # list numerical chromsomes first, followed by alphanumeric/alpha chromosomes
         for key in sorted_chrom_names:
