@@ -16,6 +16,7 @@ File path to a SAM file that:
 - Contains each read's UMI sequence at the end of its QNAME, like so:
       ```NS500451:154:HWKTMBGXX:1:11101:15364:1139:GAACAGGT```
 - Can contain header lines (starting with `@`)
+- Only contains uniquely mapped, high quality reads (the script will not filter out low quality or multi-mapping reads)
 - Example: [test.sam](./test.sam)
 #### `-u`  |  `--umi`
 File path to a text file that contains list of known UMIs, with each UMI sequence on a new line
