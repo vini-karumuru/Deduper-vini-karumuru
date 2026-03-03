@@ -9,7 +9,7 @@
         ```
 - `expected_test_output.sam` contains Deduper's expected output SAM file after after running Deduper from the top level directory of this Git repository:
     ```
-    ./karumuru_deduper.py -f unit_tests/test_input_sorted.sam -o unit_tests/expected_test_output.sam -u STL96.txt -s unit_tests/expected_test_output_stats.txt
+    ./karumuru_deduper.py -f unit_tests/test_input_sorted.sam -o unit_tests/expected_test_output.sam -u example_files/STL96.txt -s unit_tests/expected_test_output_stats.txt
     ```
 - `expected_test_output_stats.txt` contains corresponding deduplication statistics calculated by Deduper
 

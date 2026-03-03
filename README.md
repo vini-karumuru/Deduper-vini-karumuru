@@ -17,11 +17,11 @@ File path to a SAM file that:
       ```NS500451:154:HWKTMBGXX:1:11101:15364:1139:GAACAGGT```
 - Can contain header lines (starting with `@`)
 - Only contains uniquely mapped, high quality reads (the script will not filter out low quality or multi-mapping reads)
-- Example: [test.sam](./test.sam)
+- Example: [test.sam](./example_files/test.sam)
 #### `-u`  |  `--umi`
 File path to a text file that contains list of known UMIs, with each UMI sequence on a new line
 - Any reads containing UMIs that aren't in this list will be discarded
-- Example: [STL96.txt](./STL96.txt)
+- Example: [STL96.txt](./example_files/STL96.txt)
 #### `-o`  |  `--outfile`
 File path to output deduplicated SAM file
 - Will contain all header lines from input SAM file, along with deduplicated reads
@@ -30,6 +30,6 @@ File path to output deduplicated SAM file
 ### Optional Inputs
 ##### `s`  |  `--stats`
 File path to a output text file containing deduplication statistics
-- See [dedup_stats_C1_SE_uniqAlign.txt](./dedup_stats_C1_SE_uniqAlign.txt) for an example of what this file looks like
+- See [dedup_stats_C1_SE_uniqAlign.txt](./example_files/dedup_stats_C1_SE_uniqAlign.txt) for an example of what this file looks like
 
 
